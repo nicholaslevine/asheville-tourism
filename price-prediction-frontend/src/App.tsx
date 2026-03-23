@@ -86,7 +86,7 @@ function HistogramChart({ data }: { data: HistogramBin[] }) {
   const pad = { top: 16, right: 10, bottom: 36, left: 38 };
   const chartWidth = width - pad.left - pad.right;
   const chartHeight = height - pad.top - pad.bottom;
-  const maxCount = Math.max(...data.map((d) => d.count));
+  const maxCount = Math.max(1, ...data.map((d) => d.count));
   const barWidth = chartWidth / data.length;
 
   return (
@@ -129,7 +129,7 @@ function BoxPlotChart({ data }: { data: RoomTypeBox[] }) {
   const pad = { top: 14, right: 12, bottom: 70, left: 44 };
   const chartWidth = width - pad.left - pad.right;
   const chartHeight = height - pad.top - pad.bottom;
-  const maxValue = Math.max(...data.map((d) => d.max));
+  const maxValue = Math.max(1, ...data.map((d) => d.max));
   const slotWidth = chartWidth / data.length;
 
   const yScale = (value: number) => {
@@ -177,7 +177,7 @@ function ScatterChart({ data }: { data: ScatterPoint[] }) {
   const pad = { top: 14, right: 18, bottom: 44, left: 44 };
   const chartWidth = width - pad.left - pad.right;
   const chartHeight = height - pad.top - pad.bottom;
-  const maxX = Math.max(...data.map((d) => d.x));
+  const maxX = Math.max(1, ...data.map((d) => d.x));
   const maxY = 1000;
 
   const xScale = (value: number) => pad.left + (value / maxX) * chartWidth;
@@ -196,7 +196,7 @@ function ScatterChart({ data }: { data: ScatterPoint[] }) {
         Guests
       </text>
       <text x={width - pad.right - 54} y={height - 12} className="axis-label">
-        16 max
+        {`${Math.round(maxX)} max`}
       </text>
       <text x={pad.left + 2} y={pad.top + 12} className="axis-label">
         Price (USD)
@@ -265,11 +265,11 @@ function LocationChart({ data }: { data: LocationPoint[] }) {
 
 function FeatureImportanceChart({ data }: { data: FeatureImportance[] }) {
   const width = 640;
-  const height = 320;
-  const pad = { top: 16, right: 20, bottom: 24, left: 200 };
+  const height = Math.max(320, data.length * 28 + 36);
+  const pad = { top: 16, right: 20, bottom: 24, left: 220 };
   const chartWidth = width - pad.left - pad.right;
   const rowHeight = (height - pad.top - pad.bottom) / data.length;
-  const maxValue = Math.max(...data.map((d) => d.importance));
+  const maxValue = Math.max(1e-9, ...data.map((d) => d.importance));
 
   return (
     <svg viewBox={`0 0 ${width} ${height}`} className="chart-svg" role="img" aria-label="Model feature importance bar chart">
